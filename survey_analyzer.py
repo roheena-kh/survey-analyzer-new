@@ -41,11 +41,6 @@ def classify_columns(df):
 
 def plot_mcqs(df, mcq_cols, plots_folder):
     """Generate plots for multiple choice questions"""
-    # Clear existing plots first
-    for file in os.listdir(plots_folder):
-        if file.endswith('.png'):
-            os.remove(os.path.join(plots_folder, file))
-    
     os.makedirs(plots_folder, exist_ok=True)
     plot_files = []
     
@@ -58,8 +53,9 @@ def plot_mcqs(df, mcq_cols, plots_folder):
             plt.xticks(rotation=45, ha='right')
             plt.tight_layout()
             
+            # Create safe filename
             safe_col_name = re.sub(r'[\\/*?:"<>|]', "", col)[:50]
-            plot_file = f"{safe_col_name}_{int(time.time())}.png"  # Add timestamp
+            plot_file = f"{safe_col_name}.png"
             plot_path = os.path.join(plots_folder, plot_file)
             
             plt.savefig(plot_path)
