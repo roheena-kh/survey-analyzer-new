@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Survey{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow">
+      <div class="card-header bg-white">
+        <h2 class="h4 mb-0 text-center">Upload Survey Data</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="survey_file" class="form-label">
+              <i class="bi bi-file-earmark-spreadsheet"></i> Select Survey File:
+            </label>
+            <input class="form-control" type="file" id="survey_file" name="survey_file" 
+                   accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required>
+            <div class="invalid-feedback">
+              Please select a valid CSV or Excel file.
+            </div>
+            <div class="form-text">
+              Supported formats: .csv, .xlsx, .xls
+            </div>
+          </div>
+          
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="bi bi-upload"></i> Analyze Survey
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="mt-4 card shadow">
+      <div class="card-body">
+        <h3 class="h5">How it works:</h3>
+        <ol>
+          <li>Upload your survey data file</li>
+          <li>Multiple-choice questions will be automatically visualized</li>
+          <li>Open-ended responses will be analyzed using AI</li>
+          <li>View and download your comprehensive report</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Client-side form validation
+(function () {
+  'use strict'
+  const forms = document.querySelectorAll('.needs-validation')
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}
