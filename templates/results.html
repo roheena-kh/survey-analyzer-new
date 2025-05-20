@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Survey Analysis Results</h1>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info">
+          {% for msg in messages %}
+            <div>{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <h2>Visualizations</h2>
+    {% if plots %}
+        <div class="row">
+            {% for plot in plots %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <img src="{{ url_for('static', filename='results/plots/' + plot) }}" 
+                             class="card-img-top" 
+                             alt="Survey result visualization">
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No visualizations were generated for this survey.</p>
+    {% endif %}
+
+    <h2>Text Analysis Results</h2>
+    {% if analysis_data %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        {% for col in analysis_data[0].keys() %}
+                            <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in analysis_data %}
+                        <tr>
+                            {% for value in row.values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>No text analysis results available.</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Back to Home</a>
+</div>
+{% endblock %}
