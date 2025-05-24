@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 from survey_analyzer import run_survey_analysis
 import pandas as pd
+import glob
+
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with a strong secret key
 
@@ -18,9 +20,21 @@ os.makedirs(PLOTS_FOLDER, exist_ok=True)
 # Use environment variable for API key
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-key-here")
 
+def clear_plots_folder():
+    """Removes all .png files from the plots folder."""
+    files = glob.glob(os.path.join(PLOTS_FOLDER, '*.png'))
+    for f in files:
+        try:
+            os.remove(f)
+        except OSError as e:
+            print(f"Error removing file {f}: {e}")
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
+        # Clear previous plots
+        clear_plots_folder()
+
         if 'survey_file' not in request.files:
             flash('No file part')
             return redirect(request.url)
